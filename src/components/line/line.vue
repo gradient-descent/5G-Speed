@@ -23,15 +23,13 @@
   import header from 'components/header/header'
 
   export default {
+    props: ['speedCoordinate', 'realTimeSpeed', 'now'],
     data() {
       return {
         legendArr: [],
         color: this.$store.state.color,
         myChart: {},
-        name: '5G速度',
-        speedCoordinate: [],
-        realTimeSpeed: 0,
-        now: ''
+        name: '5G速度'
       }
     },
     methods: {
@@ -63,11 +61,6 @@
     },
     mounted() {
       // 基于准备好的dom，初始化echarts实例
-      let that = this;
-      this.realTimeSpeed = Math.random() * 1000;
-      for (let i = 0; i < 500; i++) {
-        this.speedCoordinate.push(this.randomData());
-      }
       this.myChart = echarts.init(document.querySelector('.line .main'));
       this.myChart.setOption({
         title: {
@@ -145,18 +138,11 @@
         }]
       });
       this.initChart();
-      setInterval(function () {
-        for (let i = 0; i < 5; i++) {
-          that.speedCoordinate.shift();
-          that.speedCoordinate.push(that.randomData());
-        }
-
-        that.myChart.setOption({
-          series: [{
-            data: that.speedCoordinate
-          }]
-        });
-      }, 500);
+      this.myChart.setOption({
+        series: [{
+          data: this.speedCoordinate
+        }]
+      });
     }
   }
 
