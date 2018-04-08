@@ -23,7 +23,7 @@
   import header from 'components/header/header'
 
   export default {
-    props: ['speedCoordinate', 'realTimeSpeed', 'now'],
+    props: ['speedCoordinate'],
     data() {
       return {
         legendArr: [],
@@ -42,22 +42,22 @@
         window.addEventListener('resize', function () {
           this.myChart.resize()
         }.bind(this))
-      },
-      randomData() {
-        let oneDay = 24 * 3600 * 1000;
-        this.now = new Date(+this.now + oneDay);
-        this.realTimeSpeed = this.realTimeSpeed + Math.random() * 21 - 10;
-        return {
-          name: this.now.toString(),
-          value: [
-            [this.now.getFullYear(), this.now.getMonth() + 1, this.now.getDate()].join('/'),
-            Math.round(this.realTimeSpeed)
-          ]
-        }
       }
     },
     components: {
       'v-header': header
+    },
+    watch: {
+      speedCoordinate: {
+        handler(val, oldVal) {
+          this.myChart.setOption({
+            series: [{
+              data: this.speedCoordinate
+            }]
+          });
+        },
+        deep: true
+      }
     },
     mounted() {
       // 基于准备好的dom，初始化echarts实例
@@ -138,11 +138,6 @@
         }]
       });
       this.initChart();
-      this.myChart.setOption({
-        series: [{
-          data: this.speedCoordinate
-        }]
-      });
     }
   }
 
