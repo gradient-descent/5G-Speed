@@ -44,7 +44,8 @@
         window.addEventListener('resize', function () {
           this.myChart.resize()
         }.bind(this))
-      },
+      }
+      /*
       randomData() {
         let oneDay = 24 * 3600 * 1000;
         this.now = new Date(+this.now + oneDay);
@@ -57,6 +58,7 @@
           ]
         }
       }
+      */
     },
     components: {
       'v-header': header
@@ -72,95 +74,9 @@
       */
       let speedCoordinate = this.$store.dispatch('initSpeed');
       this.myChart = echarts.init(document.querySelector('.line .main'));
-      this.myChart.setOption({
-        title: {
-          show: false
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            animation: false
-          }
-        },
-        legend: {
-          show: false
-        },
-        toolbox: {
-          show: false
-        },
-        color: this.color,
-        calculable: true,
-        xAxis: [{
-          name: '时间',
-          type: 'time',
-          axisLine: {
-            show: true
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          nameTextStyle: {
-            color: 'rgba(255, 255, 255, 0.69)'
-          },
-          axisLabel: {
-            textStyle: {
-              color: 'white'
-            }
-          }
-        }],
-        yAxis: [{
-          axisLine: {
-            show: false
-          },
-          nameLocation: 'end',
-          nameGap: 20,
-          nameRotate: 0,
-          axisTick: {
-            show: false
-          },
-          splitLine: {
-            lineStyle: {
-              color: ['rgba(230, 230, 230, 0.2)']
-            },
-            show: true
-          },
-          axisLabel: {
-            textStyle: {
-              color: 'white',
-              fontSize: 14
-            }
-          },
-          name: '速率',
-          type: 'value',
-          nameTextStyle: {
-            color: 'rgba(255, 255, 255, 0.69)'
-          }
-        }],
-        series: [{
-          name: '实时速率',
-          type: 'line',
-          showSymbol: false,
-          hoverAnimation: false,
-          data: speedCoordinate
-        }]
-      });
       this.initChart();
       setInterval(function () {
-        that.$store.dispatch('fetchRealTimeSpeed');
-
-        for (let i = 0; i < 5; i++) {
-          that.speedCoordinate.shift();
-          that.speedCoordinate.push(that.randomData());
-        }
-
-        that.myChart.setOption({
-          series: [{
-            data: that.speedCoordinate
-          }]
-        });
+        that.$store.dispatch('fetchRealTimeSpeed', that.myChart);
       }, 500);
     }
   }

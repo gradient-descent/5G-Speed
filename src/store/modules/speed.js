@@ -8,38 +8,92 @@ const state = {
 const getters = {};
 
 const actions = {
-  _randomData(state) {
-    let oneDay = 24 * 3600 * 1000;
-    state.now = new Date(+state.now + oneDay);
-    state.globalRealTimeSpeed = state.globalRealTimeSpeed + Math.random() * 21 - 10;
-    return {
-      name: state.now.toString(),
-      value: [
-        [state.now.getFullYear(), state.now.getMonth() + 1, state.now.getDate()].join('/'),
-        Math.round(state.globalRealTimeSpeed)
-      ]
-    }
-  },
-  initSpeed(state) {
-    let speedCoordinate = [];
-    state.globalRealTimeSpeed = Math.random() * 1000;
-    for (let i = 0; i < 500; i++) {
-      speedCoordinate.push(_randomData());
-    }
-    return speedCoordinate;
-  },
   fetchRealTimeSpeed(state, chartsObj) {
-    for (let i = 0; i < 5; i++) {
-      state.speedCoordinate.shift();
-      state.speedCoordinate.push(_randomData());
-    }
+    let now = new Date().getTime();
+    let coordData = (state) => {
+      state.globalRealTimeSpeed = state.globalRealTimeSpeed + Math.random() * 21 - 10;
+      return {
+        name: "实时速度",
+        value: [now.toString(), state.globalRealTimeSpeed]
+      }
+    };
 
     chartsObj.setOption({
+      title: {
+        show: false
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          animation: false
+        }
+      },
+      legend: {
+        show: false
+      },
+      toolbox: {
+        show: false
+      },
+      color: this.color,
+      calculable: true,
+      xAxis: [{
+        name: '时间',
+        type: 'time',
+        axisLine: {
+          show: true
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        nameTextStyle: {
+          color: 'rgba(255, 255, 255, 0.69)'
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'white'
+          }
+        }
+      }],
+      yAxis: [{
+        axisLine: {
+          show: false
+        },
+        nameLocation: 'end',
+        nameGap: 20,
+        nameRotate: 0,
+        axisTick: {
+          show: false
+        },
+        splitLine: {
+          lineStyle: {
+            color: ['rgba(230, 230, 230, 0.2)']
+          },
+          show: true
+        },
+        axisLabel: {
+          textStyle: {
+            color: 'white',
+            fontSize: 14
+          }
+        },
+        name: '速率',
+        type: 'value',
+        nameTextStyle: {
+          color: 'rgba(255, 255, 255, 0.69)'
+        }
+      }],
       series: [{
-        data: state.speedCoordinate
+        name: '实时速率',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: coordData
       }]
     });
-    console.log(state.globalRealTimeSpeed);
+    console.log(coordData);
   }
 };
 
