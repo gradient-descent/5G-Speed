@@ -377,7 +377,7 @@ const state = {
     '五家渠': [87.53, 44.17],
     '大理': [99.97, 25.42]
   },
-  showCityNumber: 5,
+  showCityNumber: 3,
   showCount: 0,
   isLoading: true
 };

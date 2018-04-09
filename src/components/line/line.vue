@@ -64,10 +64,13 @@
     mounted() {
       // 基于准备好的dom，初始化echarts实例
       let that = this;
+      /*
       this.realTimeSpeed = Math.random() * 1000;
       for (let i = 0; i < 500; i++) {
         this.speedCoordinate.push(this.randomData());
       }
+      */
+      let speedCoordinate = this.$store.dispatch('initSpeed');
       this.myChart = echarts.init(document.querySelector('.line .main'));
       this.myChart.setOption({
         title: {
@@ -141,11 +144,13 @@
           type: 'line',
           showSymbol: false,
           hoverAnimation: false,
-          data: this.speedCoordinate
+          data: speedCoordinate
         }]
       });
       this.initChart();
       setInterval(function () {
+        that.$store.dispatch('fetchRealTimeSpeed');
+
         for (let i = 0; i < 5; i++) {
           that.speedCoordinate.shift();
           that.speedCoordinate.push(that.randomData());
