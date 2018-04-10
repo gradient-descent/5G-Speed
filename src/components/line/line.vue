@@ -36,10 +36,6 @@
     },
     methods: {
       initChart() {
-        this.legendArr = this.myChart.getOption().series;
-        this.legendArr.forEach((data) => {
-          data.selected = true;
-        });
         this.$root.charts.push(this.myChart);
         window.addEventListener('resize', function () {
           this.myChart.resize()
@@ -72,7 +68,6 @@
         this.speedCoordinate.push(this.randomData());
       }
       */
-      let speedCoordinate = this.$store.dispatch('initSpeed');
       this.myChart = echarts.init(document.querySelector('.line .main'));
       this.initChart();
       setInterval(function () {

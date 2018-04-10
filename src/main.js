@@ -19,6 +19,8 @@ Vue.component(DatePicker.name, DatePicker);
 Vue.use(VueRouer);
 Vue.use(Vuex);
 
+require('./mock/mock');
+
 const router = new VueRouer({
   routes: [{
     path: '/column',
