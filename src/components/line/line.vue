@@ -35,14 +35,16 @@
       }
     },
     computed: {
-      ...mapGetters({
-        speedCoordinate: 'getSpeedCoordinate'
-      })
+      ...mapGetters([
+        'getSpeedCoordinate',
+        'getTestData'
+      ])
     },
     methods: {
-      ...mapActions({
-        fetchCoordData: 'fetchRealTimeSpeedCoord'
-      }),
+      ...mapActions([
+        'fetchRealTimeSpeedCoord',
+        'fetchTestData'
+      ]),
       initChart() {
         this.$root.charts.push(this.myChart);
         window.addEventListener('resize', function () {
@@ -79,9 +81,8 @@
       this.myChart = echarts.init(document.querySelector('.line .main'));
       this.initChart();
       setInterval(function () {
-        that.fetchCoordData();
-        console.log(that.speedCoordinate);
-        console.log(that.$store.speedCoordinate);
+        this.$store.commit('fetchTestData');
+        console.log(that.getTestData());
         // that.$store.dispatch('fetchRealTimeSpeed', that.myChart);
       }, 500);
     }

@@ -1,19 +1,33 @@
 import axios from 'axios'
 
+const TEST = 'test';
 const GET_REAL_TIME_SPEED = 'GET_REAL_TIME_SPEED';
 
 const state = {
-  speedCoordinate: []
+  speedCoordinate: [],
+  testData: 0
 };
 
 const getters = {
-  getSpeedCoordinate: state => state.speedCoordinate
+  getSpeedCoordinate: state => state.speedCoordinate,
+  getTestData: state => state.testData
 };
 
 const actions = {
   // 注意必须用{}把commit括起来
   fetchRealTimeSpeedCoord({commit}) {
     commit(GET_REAL_TIME_SPEED)
+  },
+  fetchTestData({commit}) {
+    let coordData = [];
+    axios.get('/speed/now')
+      .then(
+        (res) => {
+          let data = res.data;
+          coordData = data;
+        }
+      );
+    commit('setTestData');
   }
 };
 
@@ -35,6 +49,9 @@ const mutations = {
           })(state, data);
         });
     state.speedCoordinate = coordData;
+  },
+  setTestData(state, testData) {
+    state.testData = testData
   }
 };
 
