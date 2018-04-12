@@ -81,8 +81,8 @@
       this.myChart = echarts.init(document.querySelector('.line .main'));
       this.initChart();
       setInterval(function () {
-        this.$store.commit('fetchTestData');
-        console.log(that.getTestData());
+        that.$store.dispatch('fetchTestData');
+        // console.log(that.getTestData);
         // that.$store.dispatch('fetchRealTimeSpeed', that.myChart);
       }, 500);
     }

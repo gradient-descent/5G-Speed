@@ -18,16 +18,16 @@ const actions = {
   fetchRealTimeSpeedCoord({commit}) {
     commit(GET_REAL_TIME_SPEED)
   },
-  fetchTestData({commit}) {
+  fetchTestData({state, commit}) {
     let coordData = [];
     axios.get('/speed/now')
       .then(
         (res) => {
-          let data = res.data;
-          coordData = data;
+          coordData = res.data;
         }
       );
-    commit('setTestData');
+    commit('setTestData', coordData);
+    console.log(state.testData)
   }
 };
 
