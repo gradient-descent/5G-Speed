@@ -21,6 +21,7 @@
 <script>
   import echarts from 'echarts'
   import header from 'components/header/header'
+  import {mapActions, mapGetters} from 'vuex'
 
   export default {
     data() {
@@ -29,12 +30,19 @@
         color: this.$store.state.color,
         myChart: {},
         name: '5G速度',
-        speedCoordinate: [],
         realTimeSpeed: 0,
         now: ''
       }
     },
+    computed: {
+      ...mapGetters({
+        speedCoordinate: 'getSpeedCoordinate'
+      })
+    },
     methods: {
+      ...mapActions({
+        fetchCoordData: 'fetchRealTimeSpeedCoord'
+      }),
       initChart() {
         this.$root.charts.push(this.myChart);
         window.addEventListener('resize', function () {
@@ -71,7 +79,10 @@
       this.myChart = echarts.init(document.querySelector('.line .main'));
       this.initChart();
       setInterval(function () {
-        that.$store.dispatch('fetchRealTimeSpeed', that.myChart);
+        that.fetchCoordData();
+        console.log(that.speedCoordinate);
+        console.log(that.$store.speedCoordinate);
+        // that.$store.dispatch('fetchRealTimeSpeed', that.myChart);
       }, 500);
     }
   }
